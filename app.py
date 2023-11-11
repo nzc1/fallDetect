@@ -10,7 +10,7 @@ import time
 app = Flask(__name__)
 
 # Load trained model
-lrmodel, lrscaler = joblib.load('fall_detection_lrmodel.joblib')
+lrModel, lrScaler = joblib.load('fall_detection_lrmodel.joblib')
 rfModel, rfScaler = joblib.load('fall_detection_rfmodel.joblib')
 
 # root
@@ -359,10 +359,10 @@ def predictLR():
         })
 
         # Perform data scaling if necessary (assuming 'scaler' is defined)
-        data_point_scaled = rfScaler.transform(data_point)
+        data_point_scaled = lrScaler.transform(data_point)
         
         # Make predictions using loaded model
-        prediction = rfModel.predict(data_point_scaled)
+        prediction = lrModel.predict(data_point_scaled)
         
         message = "Not a fall" if prediction[0] == 0 else "Fall"
         value = False if prediction[0] == 0 else True
@@ -456,10 +456,10 @@ def predictLRAP():
         })
 
         # Perform data scaling if necessary (assuming 'scaler' is defined)
-        data_point_scaled = lrscaler.transform(data_point)
+        data_point_scaled = lrScaler.transform(data_point)
         
         # Make predictions using your loaded model
-        predictions = lrmodel.predict(data_point_scaled)
+        predictions = lrModel.predict(data_point_scaled)
         
         # Iterate through predictions and build a new list
         prediction_values = []
