@@ -56,10 +56,10 @@ def preProcess():
         timestamps = data[:, 0].astype(float)
 
         # Define the time window for the 4th and 6th seconds
-        window_start_4th = 4.0
-        window_end_4th = 5.0
-        window_start_6th = 6.0
-        window_end_6th = 7.0
+        window_start_4th = 3.0
+        window_end_4th = 4.0
+        window_start_6th = 5.0
+        window_end_6th = 6.0
 
         # Extract data within the 4th second window
         acc_x_4th = accelerometer_x[(timestamps >= window_start_4th) & (timestamps < window_end_4th)]
@@ -164,10 +164,10 @@ def predict():
         timestamps = data[:, 0].astype(float)
 
         # Define the time window for the 4th and 6th seconds
-        window_start_4th = 4.0
-        window_end_4th = 5.0
-        window_start_6th = 6.0
-        window_end_6th = 7.0
+        window_start_4th = 3.0
+        window_end_4th = 4.0
+        window_start_6th = 5.0
+        window_end_6th = 6.0
 
         # Extract data within the 4th second window
         acc_x_4th = accelerometer_x[(timestamps >= window_start_4th) & (timestamps < window_end_4th)]
@@ -255,6 +255,10 @@ def predict():
 
             # Return the predictions as JSON
             return jsonify({'message': message, 'isFalled': value})
+        
+        else:
+            # Return the predictions as JSON
+            return jsonify({'message': 'Just Relaxing', 'isFalled': False})
 
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -293,10 +297,10 @@ def predictLR():
         timestamps = data[:, 0].astype(float)
 
         # Define the time window for the 4th and 6th seconds
-        window_start_4th = 4.0
-        window_end_4th = 5.0
-        window_start_6th = 6.0
-        window_end_6th = 7.0
+        window_start_4th = 3.0
+        window_end_4th = 4.0
+        window_start_6th = 5.0
+        window_end_6th = 6.0
 
         # Extract data within the 4th second window
         acc_x_4th = accelerometer_x[(timestamps >= window_start_4th) & (timestamps < window_end_4th)]
@@ -383,6 +387,10 @@ def predictLR():
 
             # Return the predictions as JSON
             return jsonify({'message': message, 'isFalled': value})
+        
+        else:
+            # Return the predictions as JSON
+            return jsonify({'message': 'Just Relaxing', 'isFalled': False})
 
     except Exception as e:
         return jsonify({'error': str(e)})
