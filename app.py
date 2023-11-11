@@ -220,34 +220,41 @@ def predict():
         # 9. Maximum linear acceleration of the 6th second window
         linear_acceleration_6th = np.sqrt((acc_x_6th - 0)**2 + (acc_y_6th - 0)**2 + (acc_z_6th - 9.81)**2)
         post_lin_max_6th = np.max(linear_acceleration_6th)
-
-        # calculated features
-        features = [acc_max_4th, gyro_max_4th, acc_kurtosis, gyro_kurtosis, lin_max_4th, acc_skewness, gyro_skewness, post_gyro_max_6th, post_lin_max_6th]
-
-        data_point = pd.DataFrame({
-            'acc_max': [features[0]],
-            # not having a higher impact
-            # 'gyro_max': [features[1]],
-            'acc_kurtosis': [features[2]],
-            'gyro_kurtosis': [features[3]],
-            'lin_max': [features[4]],
-            'acc_skewness': [features[5]],
-            'gyro_skewness': [features[6]],
-            'post_gyro_max': [features[7]],
-            'post_lin_max': [features[8]]
-        })
-
-        # Perform data scaling if necessary (assuming 'scaler' is defined)
-        data_point_scaled = rfScaler.transform(data_point)
         
-        # Make predictions using loaded model
-        prediction = rfModel.predict(data_point_scaled)
+        # 10. Maximum absolute y-axis acceleration of the 6th second window
+        acc_y_max_6th = np.max(np.abs(acc_y_6th))
         
-        message = "Not a fall" if prediction[0] == 0 else "Fall"
-        value = False if prediction[0] == 0 else True
+        # Apply the threshold to determine if it's a fall
+        fall_threshold = 7.0
+        if acc_y_max_6th < fall_threshold:
 
-        # Return the predictions as JSON
-        return jsonify({'message': message, 'isFalled': value})
+            # calculated features
+            features = [acc_max_4th, gyro_max_4th, acc_kurtosis, gyro_kurtosis, lin_max_4th, acc_skewness, gyro_skewness, post_gyro_max_6th, post_lin_max_6th]
+
+            data_point = pd.DataFrame({
+                'acc_max': [features[0]],
+                # not having a higher impact
+                # 'gyro_max': [features[1]],
+                'acc_kurtosis': [features[2]],
+                'gyro_kurtosis': [features[3]],
+                'lin_max': [features[4]],
+                'acc_skewness': [features[5]],
+                'gyro_skewness': [features[6]],
+                'post_gyro_max': [features[7]],
+                'post_lin_max': [features[8]]
+            })
+
+            # Perform data scaling if necessary (assuming 'scaler' is defined)
+            data_point_scaled = rfScaler.transform(data_point)
+            
+            # Make predictions using loaded model
+            prediction = rfModel.predict(data_point_scaled)
+            
+            message = "Not a fall" if prediction[0] == 0 else "Fall"
+            value = False if prediction[0] == 0 else True
+
+            # Return the predictions as JSON
+            return jsonify({'message': message, 'isFalled': value})
 
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -342,33 +349,40 @@ def predictLR():
         # 9. Maximum linear acceleration of the 6th second window
         linear_acceleration_6th = np.sqrt((acc_x_6th - 0)**2 + (acc_y_6th - 0)**2 + (acc_z_6th - 9.81)**2)
         post_lin_max_6th = np.max(linear_acceleration_6th)
-
-        # calculated features
-        features = [acc_max_4th, gyro_max_4th, acc_kurtosis, gyro_kurtosis, lin_max_4th, acc_skewness, gyro_skewness, post_gyro_max_6th, post_lin_max_6th]
-
-        data_point = pd.DataFrame({
-            'acc_max': [features[0]],
-            'gyro_max': [features[1]],
-            'acc_kurtosis': [features[2]],
-            'gyro_kurtosis': [features[3]],
-            'lin_max': [features[4]],
-            'acc_skewness': [features[5]],
-            'gyro_skewness': [features[6]],
-            'post_gyro_max': [features[7]],
-            'post_lin_max': [features[8]]
-        })
-
-        # Perform data scaling if necessary (assuming 'scaler' is defined)
-        data_point_scaled = lrScaler.transform(data_point)
         
-        # Make predictions using loaded model
-        prediction = lrModel.predict(data_point_scaled)
+        # 10. Maximum absolute y-axis acceleration of the 6th second window
+        acc_y_max_6th = np.max(np.abs(acc_y_6th))
         
-        message = "Not a fall" if prediction[0] == 0 else "Fall"
-        value = False if prediction[0] == 0 else True
+        # Apply the threshold to determine if it's a fall
+        fall_threshold = 7.0
+        if acc_y_max_6th < fall_threshold:
 
-        # Return the predictions as JSON
-        return jsonify({'message': message, 'isFalled': value})
+            # calculated features
+            features = [acc_max_4th, gyro_max_4th, acc_kurtosis, gyro_kurtosis, lin_max_4th, acc_skewness, gyro_skewness, post_gyro_max_6th, post_lin_max_6th]
+
+            data_point = pd.DataFrame({
+                'acc_max': [features[0]],
+                'gyro_max': [features[1]],
+                'acc_kurtosis': [features[2]],
+                'gyro_kurtosis': [features[3]],
+                'lin_max': [features[4]],
+                'acc_skewness': [features[5]],
+                'gyro_skewness': [features[6]],
+                'post_gyro_max': [features[7]],
+                'post_lin_max': [features[8]]
+            })
+
+            # Perform data scaling if necessary (assuming 'scaler' is defined)
+            data_point_scaled = lrScaler.transform(data_point)
+            
+            # Make predictions using loaded model
+            prediction = lrModel.predict(data_point_scaled)
+            
+            message = "Not a fall" if prediction[0] == 0 else "Fall"
+            value = False if prediction[0] == 0 else True
+
+            # Return the predictions as JSON
+            return jsonify({'message': message, 'isFalled': value})
 
     except Exception as e:
         return jsonify({'error': str(e)})
